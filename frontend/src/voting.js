@@ -336,6 +336,16 @@ async function castVote() {
     const voterAddress = document.getElementById('castVoteAddress').value;
     try {
 
+		// Call the smart contract's `voters` mapping to check if the voter has voted
+        const voterInfo = await votingContractInstance.read.voters([voterAddress]);
+		const hasVoted = voterInfo[0]; 
+
+        // Check if the voter has already voted
+        if (hasVoted) {
+            document.getElementById('status').innerText = 'You have already voted!';
+            return;  // Stop execution if the voter has already voted
+        }
+
         // Call the smart contract's registerVoter function
         const accounts = await walletClient.requestAddresses();
         const [accountAddress] = accounts;  // This will be the account making the transaction
