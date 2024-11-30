@@ -405,35 +405,23 @@ async function getRegisteredVoters() {
         // Fetch the list of registered voters from the smart contract
         const voters = await votingContractInstance.read.getRegisteredVoters();
 
-        // Convert the list of voters into a formatted string
-        const voterList = voters.join(",");
+        // Get the voter list container
+        const voterListContainer = document.getElementById('voterdatabase');
+        
+        // Clear any existing list items
+        voterListContainer.innerHTML = '';
 
-        // Display the list of registered voters in the "voterdatabase" paragraph
-        document.getElementById('voterdatabase').textContent = `Registered Voters: ${voterList}`;
+        // Populate the list with each voter as a list item
+        voters.forEach(voter => {
+            const li = document.createElement('li'); // Create a new list item
+            li.textContent = voter;  // Set the text of the list item to the voter's address
+            voterListContainer.appendChild(li);  // Append the list item to the list
+        });
     } catch (err) {
         console.error('Error fetching registered voters: ', err);
         document.getElementById('voterdatabase').textContent = 'Error fetching registered voters';
     }
 }
-
-// Attach event listener to the vote button
-
-// document.getElementById('registerButton').addEventListener('click', registerVoter);
-// document.getElementById('voteButton').addEventListener('click', castVote);
-// document.getElementById('candidates').addEventListener('change', async () => {
-//     await getVotes(); // Call getVotes after the candidate is selected
-// });
-// window.addEventListener('load', () => {
-//     loadCandidates();
-//     getVotes();
-//     // castVote();
-//     // registerVoter();
-//     getRegisteredVoters();
-// });
-
-// window.addEventListener('load', registerVoter);
-
-
 
 // Determine the page type
 if (document.location.pathname.includes("vote.html")) {
@@ -448,6 +436,21 @@ if (document.location.pathname.includes("vote.html")) {
     loadCandidates();
 	document.getElementById('candidates').addEventListener('change', getVotes);
 }
+
+// Event listener for password submit
+document.getElementById('passwordSubmit').addEventListener('click', function() {
+    const enteredPassword = document.getElementById('adminPassword').value;
+    const correctPassword = 'password'; // The admin password
+
+    if (enteredPassword === correctPassword) {
+        // Hide the password prompt and show the container
+        document.getElementById('passwordPrompt').style.display = 'none';
+        document.getElementById('container').style.display = 'block';
+    } else {
+        // Optionally alert the user if the password is incorrect
+        alert('Incorrect password. Please try again.');
+    }
+});
 
 
 
