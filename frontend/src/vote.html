@@ -12,8 +12,14 @@
             <h1>Voting System</h1>
             <p>Select a candidate and cast your vote.</p>
 
-            <div class="images">
+            <div>
+                <img id="candidateImage" src="default-image.jpeg"
+                    alt="Candidate Image"
+                    style="display: none; width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #007bff;">
+            </div>
+            <div>
                 <select id="candidates">
+                    <option value disabled selected>Choose a candidate</option>
                     <!-- Candidates will be dynamically populated here -->
                 </select>
             </div>

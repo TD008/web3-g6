@@ -312,6 +312,22 @@ async function loadCandidates() {
 				option.value = candidate;
 				option.textContent = candidate;
 				selectElement.appendChild(option);
+        // Image update as the user selects a candidate
+        const candidateImage = document.getElementById('candidateImage');
+        
+        selectElement.addEventListener('input', (event) => {
+            const selectedCandidate = event.target.value;
+            if (selectedCandidate) {
+                // Show the image when a candidate is selected
+                candidateImage.style.display = 'block';
+                candidateImage.src = `${selectedCandidate.toLowerCase()}.jpeg`; // Assuming candidate images are named as candidate.jpeg
+                candidateImage.alt = `${selectedCandidate} campaign image`;
+            } else {
+                // Hide the image if no candidate is selected
+                candidateImage.style.display = 'none';
+            }
+        });
+
 			}
 			if (document.location.pathname.includes("index.html")) {
 				const button = document.createElement('button');
