@@ -35,7 +35,7 @@ const walletClient = createWalletClient({
 const accounts = await walletClient.requestAddresses();
 const [address] = accounts;
 
-const votingContractAddress = "0xE5a14BE235b0E95ab4FBF27910f861eF724b7741";
+const votingContractAddress = "0x002a004DC720F39fFE38c4469f4F14E3Fa5a5850";
 const votingContractABI = [
 	{
 		"inputs": [
