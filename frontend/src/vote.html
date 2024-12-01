@@ -8,7 +8,7 @@
     </head>
     <body>
         <nav id="nav"></nav>
-        <div class="container">
+        <div class="container" id="default">
             <h1>Voting System</h1>
             <p>Select a candidate and cast your vote.</p>
 
@@ -24,8 +24,8 @@
             <input type="text" id="castVoteAddress"
                 placeholder="Enter Voter Ethereum Address">
 
-            <label for="castVoteToken">Voter Token:</label>
-            <input type="text" id="castVoteToken"
+            <label for="castVoteToken">Password:</label>
+            <input type="password" id="castVoteToken"
                 placeholder="Enter Unique Voter Token">
 
             <button id="voteButton">Cast Vote</button>
@@ -36,6 +36,10 @@
             </div>
 
             <p id="status"></p>
+        </div>
+        <div id="election" style="display: none;">
+            <h2>Election has ended.</h2>
+            <p id="election-message"></p>
         </div>
         <script type="module" src="voting.js"></script>
     </body>

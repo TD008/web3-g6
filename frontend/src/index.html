@@ -9,7 +9,7 @@
     <body>
         <nav id="nav"></nav>
 
-        <div class="container">
+        <div class="container" id="default">
             <h1>Live Election Results</h1>
             <div>
                 <select id="candidates">
@@ -21,6 +21,10 @@
             <p id="status"></p>
 
             <script type="module" src="voting.js"></script>
+        </div>
+        <div id="election" style="display: none;">
+            <h2>Election has ended.</h2>
+            <p id="election-message"></p>
         </div>
     </body>
 </html>

@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 20px;
     font-family: Arial, sans-serif;
+    align-items: center !important;
 }
 
 nav {
@@ -46,3 +47,10 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.container, .election {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Optional: Adjusts alignment of items within the container */
+    gap: 10px; /* Optional: Adds space between elements */
+  }

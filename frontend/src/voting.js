@@ -12,6 +12,8 @@ fetch('nav.html')
 })
 .catch(err => console.error('Error loading nav:', err));
 
+const votesNeeded = 1;
+
 const walletClient = createWalletClient({
     chain: {
         id: 16,  // Chain ID for Coston Testnet
@@ -368,11 +370,16 @@ async function castVote() {
 async function registerVoter() {
     const voterAddress = document.getElementById('voterAddress').value;
     const voterToken = document.getElementById('voterToken').value;
+	const confirmVoterToken = document.getElementById('confirmVoterToken');
 
     if (!voterAddress || !voterToken) {
         document.getElementById('registerStatus').innerText = 'Please provide both voter address and token.';
         return;
     }
+	if (voterToken != confirmVoterToken) {
+		document.getElementById('registerStatus').innerText = 'Password inputs do not match';
+        return;
+	}
 
     try {
         // Check if the voter is already registered
@@ -423,6 +430,37 @@ async function getRegisteredVoters() {
     }
 }
 
+async function getResults(voteCount) {
+    const candidates = await votingContractInstance.read.getCandidates();
+
+    let mostVotes = 0;
+    let winners = []; // Track all winners (in case of a tie)
+
+    // Iterate through candidates and determine the most votes
+    for (const candidate of candidates) {
+        const votes = await votingContractInstance.read.getVotes([candidate]);
+
+        // Check if this candidate has more votes than the current mostVotes
+        if (votes == voteCount) {
+            mostVotes = votes; // Update the most votes
+            winners.push(candidate);
+			// Update the UI
+			document.getElementById('default').style.display = 'none';
+			document.getElementById('election').style.display = 'block';
+			if (winners.length === 1) {
+				// If only one winner, display the winner and their vote count
+				document.getElementById('election-message').textContent = `${winners[0]} has won the election with ${mostVotes} votes.`;
+			} else {
+				// If multiple winners, display a tie message
+				document.getElementById('election-message').textContent = `It's a tie! The winners are: ${winners.join(', ')} with ${mostVotes} votes each.`;
+			}
+        }
+    }
+
+}
+
+
+getResults(votesNeeded);
 // Determine the page type
 if (document.location.pathname.includes("vote.html")) {
     loadCandidates();
