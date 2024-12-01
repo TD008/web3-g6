@@ -12,7 +12,6 @@ fetch('nav.html')
 })
 .catch(err => console.error('Error loading nav:', err));
 
-const votesNeeded = 1;
 
 const walletClient = createWalletClient({
     chain: {
@@ -36,7 +35,7 @@ const walletClient = createWalletClient({
 const accounts = await walletClient.requestAddresses();
 const [address] = accounts;
 
-const votingContractAddress = "0x0973200C69A7f9b54ddB81f04DB2CBb182322Fff";
+const votingContractAddress = "0x46e7EE066a90FA0C3730CA1A28D287b6F3306875";
 const votingContractABI = [
 	{
 		"inputs": [
@@ -294,6 +293,9 @@ const votingContractInstance = getContract({
     client: walletClient,
 });
 
+const votesNeeded = 5;
+const electionEnded = false;
+
 async function loadCandidates() {
     try {
         // Fetch the candidates array from the contract
@@ -370,7 +372,7 @@ async function castVote() {
 async function registerVoter() {
     const voterAddress = document.getElementById('voterAddress').value;
     const voterToken = document.getElementById('voterToken').value;
-	const confirmVoterToken = document.getElementById('confirmVoterToken');
+	const confirmVoterToken = document.getElementById('confirmVoterToken').value;
 
     if (!voterAddress || !voterToken) {
         document.getElementById('registerStatus').innerText = 'Please provide both voter address and token.';
@@ -433,31 +435,33 @@ async function getRegisteredVoters() {
 async function getResults(voteCount) {
     const candidates = await votingContractInstance.read.getCandidates();
 
-    let mostVotes = 0;
     let winners = []; // Track all winners (in case of a tie)
 
-    // Iterate through candidates and determine the most votes
+    // Iterate through candidates and determine if they meet the vote threshold
     for (const candidate of candidates) {
         const votes = await votingContractInstance.read.getVotes([candidate]);
 
-        // Check if this candidate has more votes than the current mostVotes
-        if (votes == voteCount) {
-            mostVotes = votes; // Update the most votes
+        // Check if this candidate has met the vote threshold to win
+        if (votes >= voteCount) {
             winners.push(candidate);
-			// Update the UI
-			document.getElementById('default').style.display = 'none';
-			document.getElementById('election').style.display = 'block';
-			if (winners.length === 1) {
-				// If only one winner, display the winner and their vote count
-				document.getElementById('election-message').textContent = `${winners[0]} has won the election with ${mostVotes} votes.`;
-			} else {
-				// If multiple winners, display a tie message
-				document.getElementById('election-message').textContent = `It's a tie! The winners are: ${winners.join(', ')} with ${mostVotes} votes each.`;
-			}
         }
     }
 
+    // Only update the UI if there are winners
+    if (winners.length > 0) {
+        // Hide the default content and show the election results
+        document.getElementById('default').style.display = 'none';
+        document.getElementById('election').style.display = 'block';
+        
+        // Display the result based on whether there is a tie or a single winner
+        if (winners.length === 1) {
+            document.getElementById('election-message').textContent = `${winners[0]} has won the election with ${voteCount} or more votes.`;
+        } else {
+            document.getElementById('election-message').textContent = `It's a tie! The winners are: ${winners.join(', ')} with ${voteCount} or more votes each.`;
+        }
+    }
 }
+
 
 
 getResults(votesNeeded);
@@ -470,12 +474,7 @@ if (document.location.pathname.includes("vote.html")) {
     document.getElementById('registerButton').addEventListener('click', registerVoter);
 } else if (document.location.pathname.includes('dashboard.html')) {
 	getRegisteredVoters();
-} else {
-    loadCandidates();
-	document.getElementById('candidates').addEventListener('change', getVotes);
-}
-
-// Event listener for password submit
+	// Event listener for password submit
 document.getElementById('passwordSubmit').addEventListener('click', function() {
     const enteredPassword = document.getElementById('adminPassword').value;
     const correctPassword = 'password'; // The admin password
@@ -489,8 +488,55 @@ document.getElementById('passwordSubmit').addEventListener('click', function() {
         alert('Incorrect password. Please try again.');
     }
 });
+} else {
+    loadCandidates();
+	document.getElementById('candidates').addEventListener('change', getVotes);
+}
+
+// Function to periodically check the election results
+async function checkElectionStatus(voteCount) {
+    // Use setInterval to check the results every 5 seconds
+    const intervalId = setInterval(async () => {
+        const candidates = await votingContractInstance.read.getCandidates();
+
+        let winners = []; // Track all winners (in case of a tie)
+
+        // Iterate through candidates and determine if they meet the vote threshold
+        for (const candidate of candidates) {
+            const votes = await votingContractInstance.read.getVotes([candidate]);
+
+            // Check if this candidate has met the vote threshold to win
+            if (votes >= voteCount) {
+                winners.push(candidate);
+            }
+        }
+
+        // If there are winners, stop the polling and refresh the page or block voting
+        if (winners.length > 0 && !electionEnded) {
+            clearInterval(intervalId);  // Stop checking the results
+            document.getElementById('default').style.display = 'none';
+            document.getElementById('election').style.display = 'block';
+
+            // Display the result based on whether there is a tie or a single winner
+            if (winners.length === 1) {
+                document.getElementById('election-message').textContent = `${winners[0]} has won the election with ${voteCount} or more votes.`;
+            } else {
+                document.getElementById('election-message').textContent = `It's a tie! The winners are: ${winners.join(', ')} with ${voteCount} or more votes each.`;
+            }
+			electionEnded = true;
+            // Optional: Refresh the page to prevent further voting
+            setTimeout(() => {
+                location.reload(); // Reload the page after 3 seconds
+            }, 3000);
+        }
+    }, 5000); // Check every 5 seconds
+}
+
+// Call this function to start checking the results when the page loads
+checkElectionStatus(votesNeeded); // Example: You can pass the required vote count needed to win
 
 
 
 
 // ["Chuck", "John", "Adam"]
+// https://learnweb3.io/degrees/ethereum-developer-degree/freshman/build-your-first-d-app-on-ethereum/
