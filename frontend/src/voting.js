@@ -295,6 +295,9 @@ const votingContractInstance = getContract({
 
 const votesNeeded = 5;
 const electionEnded = false;
+// Select the container where buttons should go
+const buttonContainer = document.querySelector('.buttons');
+const electionContainer = document.querySelector('.election');
 
 async function loadCandidates() {
     try {
@@ -304,29 +307,45 @@ async function loadCandidates() {
         // Populate the dropdown with the candidates
         const selectElement = document.getElementById('candidates');
         candidates.forEach(candidate => {
-            const option = document.createElement('option');
-            option.value = candidate;
-            option.textContent = candidate;
-            selectElement.appendChild(option);
+			if (document.location.pathname.includes("vote.html")) {
+				const option = document.createElement('option');
+				option.value = candidate;
+				option.textContent = candidate;
+				selectElement.appendChild(option);
+			}
+			if (document.location.pathname.includes("index.html")) {
+				const button = document.createElement('button');
+				const image = document.createElement('img');
+				button.textContent = candidate;
+				button.id = `candidate-${candidate}`;
+				button.addEventListener('click', () => {
+					console.log(`You voted for ${candidate}`);
+					getVotes(candidate);
+				});
+				image.src = `${candidate.toLowerCase()}.jpeg`; 
+				image.alt = `${candidate} campaign image`;
+				buttonContainer.appendChild(image);
+				buttonContainer.appendChild(button);
+			}
         });
     } catch (err) {
         console.error('Error fetching candidates: ', err);
     }
 }
 
-async function getVotes() {
+async function getVotes(candidate) {
     try {
         // Get the selected candidate from the dropdown
-        const selectElement = document.getElementById('candidates');
-        const selectedCandidate = selectElement.value;
+        // const selectElement = document.getElementById('candidates');
+        // const selectedCandidate = selectElement.value;
 
-        console.log(`Selected Candidate: ${selectedCandidate}`); // Debugging line to check if selectedCandidate is populated
+        console.log(`Selected Candidate: ${candidate}`); // Debugging line to check if selectedCandidate is populated
 
         // Call the smart contract's getVotes function with the selected candidate
-        const votes = await votingContractInstance.read.getVotes([selectedCandidate]);
+        const votes = await votingContractInstance.read.getVotes([candidate]);
 
         // Display the number of votes for the selected candidate
-        document.getElementById('status').textContent = `${selectedCandidate} has ${votes} votes.`;
+        document.getElementById('status').textContent = `${candidate} has ${votes} votes.`;
     } catch (err) {
         console.error('Error fetching votes: ', err);
         document.getElementById('status').textContent = 'Error fetching votes.';
@@ -455,9 +474,21 @@ async function getResults(voteCount) {
         
         // Display the result based on whether there is a tie or a single winner
         if (winners.length === 1) {
+			const image = document.createElement('img');
+			image.src = `${winners[0].toLowerCase()}.jpeg`; 
+			image.alt = `${winners[0]} campaign image`;
+			electionContainer.appendChild(image);
             document.getElementById('election-message').textContent = `${winners[0]} has won the election with ${voteCount} or more votes.`;
         } else {
             document.getElementById('election-message').textContent = `It's a tie! The winners are: ${winners.join(', ')} with ${voteCount} or more votes each.`;
+
+
+			winners.forEach(winner => {
+                const image = document.createElement('img');
+                image.src = `${winner.toLowerCase()}.jpeg`;  // Assuming image filenames match candidate names
+                image.alt = `${winner} campaign image`;
+                electionContainer.appendChild(image);
+            });
         }
     }
 }
@@ -490,7 +521,6 @@ document.getElementById('passwordSubmit').addEventListener('click', function() {
 });
 } else {
     loadCandidates();
-	document.getElementById('candidates').addEventListener('change', getVotes);
 }
 
 // Function to periodically check the election results
@@ -539,4 +569,8 @@ checkElectionStatus(votesNeeded); // Example: You can pass the required vote cou
 
 
 // ["Chuck", "John", "Adam"]
+// References
 // https://learnweb3.io/degrees/ethereum-developer-degree/freshman/build-your-first-d-app-on-ethereum/
+// https://dribbble.com/shots/6676961-Cartoon-Avatar-Profile-Picture
+// https://www.etsy.com/market/cartoon_profile_pic
+// https://www.etsy.com/market/cartoon_profile_pic

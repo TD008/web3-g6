@@ -6,9 +6,13 @@ body {
 }
 
 nav {
-    background-color: #7fa9d3;
+    background-color: #007bff;
     padding: 1rem;
     margin-bottom: 2rem;
+    object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+    border-radius: 15px; /* Optional: Adds rounded corners */
+
+    border: 3px solid #007bff; /* Adds a solid border with a color */
 }
 
 nav ul {
@@ -48,9 +52,43 @@ button:hover {
     background-color: #0056b3;
 }
 
-.container, .election {
+.container {
     display: flex;
     flex-direction: column;
     align-items: center; /* Optional: Adjusts alignment of items within the container */
     gap: 10px; /* Optional: Adds space between elements */
   }
+
+img {
+    width: 150px;  /* Set the desired width */
+    height: 150px; /* Set the desired height */
+    object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+    border-radius: 50%; /* Optional: Adds rounded corners */
+    margin: 10px; /* Optional: Adds space around the image */
+    border: 3px solid #007bff; /* Adds a solid border with a color */
+
+}
+
+#main-image {
+    width: 450px;  /* Set the desired width */
+    height: 450px; /* Set the desired height */
+    border: none;
+}
+
+#election {
+    flex-direction: column;
+    align-items: center; /* Optional: Adjusts alignment of items within the container */
+    gap: 10px; /* Optional: Adds space between elements */
+    display: none;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the items horizontally */
+    gap: 20px; /* Adds space between the items */
+
+}
+
