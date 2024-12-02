@@ -293,7 +293,7 @@ const votingContractInstance = getContract({
     client: walletClient,
 });
 
-const votesNeeded = 6;
+const votesNeeded = 3;
 const electionEnded = false;
 // Select the container where buttons should go
 const buttonContainer = document.querySelector('.buttons');
