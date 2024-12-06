@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register Voter</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <nav id="nav"></nav>
+        <div class="container" id="default">
+            <h2>Voter Registration</h2>
+            <label for="voterAddress">Voter Address:</label>
+            <input type="text" id="voterAddress"
+                placeholder="Enter Voter Ethereum Address">
+
+            <label for="voterToken">Password:</label>
+            <input type="password" id="voterToken"
+                placeholder="Create a unique password">
+            <label for="confirmVoterToken"> Confirm Password:</label>
+            <input type="password" id="confirmVoterToken"
+                placeholder>
+
+            <button id="registerButton">Register Voter</button>
+
+            <p id="registerStatus"></p>
+            <p id="voterdatabase"></p>
+        </div>
+        <div id="election" class="election" style="display: none;">
+            <h2>Registration Closed</h2>
+            <p id="election-message"></p>
+        </div>
+        <script type="module" src="voting.js"></script>
+    </body>
+</html>

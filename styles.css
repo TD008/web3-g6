@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    align-items: center !important;
+}
+
+nav {
+    background-color: #007bff;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+    border-radius: 15px; /* Optional: Adds rounded corners */
+
+    border: 3px solid #007bff; /* Adds a solid border with a color */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #bd2323;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Optional: Adjusts alignment of items within the container */
+    gap: 10px; /* Optional: Adds space between elements */
+  }
+
+img {
+    width: 150px;  /* Set the desired width */
+    height: 150px; /* Set the desired height */
+    object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+    border-radius: 50%; /* Optional: Adds rounded corners */
+    margin: 10px; /* Optional: Adds space around the image */
+    border: 3px solid #007bff; /* Adds a solid border with a color */
+
+}
+
+#main-image {
+    width: 450px;  /* Set the desired width */
+    height: 450px; /* Set the desired height */
+    border: none;
+}
+
+#election {
+    flex-direction: column;
+    align-items: center; /* Optional: Adjusts alignment of items within the container */
+    gap: 10px; /* Optional: Adds space between elements */
+    display: none;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the items horizontally */
+    gap: 20px; /* Adds space between the items */
+
+}
+

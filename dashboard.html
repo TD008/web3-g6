@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Voting System</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <nav id="nav"></nav>
+        <div id="passwordPrompt">
+            <label for="adminPassword">Enter Admin Password:</label>
+            <input type="password" id="adminPassword" placeholder="Password">
+            <button id="passwordSubmit">Submit</button>
+        </div>
+        <div class="container" id="container" style="display: none;">
+            <h2>Voter Database:</h2>
+            <ul id="voterdatabase"></ul>
+
+            <script type="module" src="voting.js"></script>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Voting System</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <nav id="nav"></nav>
+
+        <div class="container" id="default">
+            <img src="election-day-badge-in-red-white-blue.jpeg"
+                alt="election" id="main-image">
+            <h1>Live Election Results</h1>
+
+            <br>
+
+            <p id="status"></p>
+
+            <div class="buttons">
+
+            </div>
+
+            <script type="module" src="voting.js"></script>
+        </div>
+        <div class="election" id="election" style="display: none;">
+            <h2>Election has ended.</h2>
+            <p id="election-message"></p>
+            <!-- <img id="winner" src alt style="display: none"> -->
+        </div>
+    </body>
+</html>
